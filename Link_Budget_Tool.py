@@ -12,12 +12,12 @@ antenna_gain = 10 * math.log(radiation_efficiency * ((4 * np.pi * (np.pi * Space
 EIRP = 10 * math.log((Spacecraft.transmit_P / 1),10) - Spacecraft.transmit_loss_f + antenna_gain # dB
 
 #Free Space Loss
-L_FS = 20 * math.log((4 * math.pi * .........)/Lambda) #dB
+L_FS = 20 * math.log((4 * math.pi * 1)/Lambda) #dB
 
 #Space Loss
-L_S =
+L_S = 1
 #Atmospheric Loss
-L_A =
+L_A = 1
 
 #Payload data rate
 image_width = math.arctan(Payload.width_angle / 2) * Orbit.altitude # m
