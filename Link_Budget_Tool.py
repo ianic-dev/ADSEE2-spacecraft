@@ -17,7 +17,7 @@ L_FS = 20 * math.log((4 * math.pi * 1)/Lambda) #dB
 #Space Loss
 L_S = 1
 #Atmospheric Loss
-L_A = 1
+L_A = 2
 
 #Payload data rate
 image_width = math.arctan(Payload.width_angle / 2) * Orbit.altitude # m
