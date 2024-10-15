@@ -1,17 +1,17 @@
 import math as m
 
 
-class SC:
-    transmit_P = 0  # W
-    transmit_loss_f = 0  # -
-    freq_downlink = 0  # GHz
+class Spacecraft:
+    transmit_P = 1  # W
+    transmit_loss_f = 1  # -
+    freq_downlink = 1  # GHz
     freq_downlink = freq_downlink/1e9  # to Hz
-    turnaround_r = 0  # -
+    turnaround_r = 1  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
-    antenna_d = 0  # m
+    antenna_d = 1  # m
 
 
-class PL:
+class Payload:
     width_angle = 0  # deg
     width_angle = m.radians(width_angle)  # rad
     px_size = 0  # arcmin
@@ -23,7 +23,7 @@ class PL:
     downlink_fraction = downlink_time_p_day/24  # -
 
 
-class Req:
+class Requirement:
     uplink_data_rate = 0  # bit/s
     BER = 0  # -
 
@@ -38,6 +38,6 @@ class Orbit:
     pointing_offst = m.radians(pointing_offst)  # rad
 
 
-class GroundSt:
+class Ground_station:
     transmit_P = 0  # W
     antenna_d = 0  # m
