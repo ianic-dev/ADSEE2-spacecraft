@@ -4,6 +4,7 @@ class SC:
     freq_downlink = 0  # Hz
     turnaround_r = 0  # -
     antenna_d = 0  # m
+# test
 
 
 class PL:
