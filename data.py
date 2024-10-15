@@ -35,7 +35,7 @@ class Orbit:
     elongation_angle = 0  # deg
     elongation_angle = m.radians(elongation_angle)  # rad
     pointing_offst = 0  # deg
-    pointing_offst = m.radians(elongation_angle)  # rad
+    pointing_offst = m.radians(pointing_offst)  # rad
 
 
 class GroundSt:
