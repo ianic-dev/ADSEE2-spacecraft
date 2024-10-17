@@ -48,7 +48,7 @@ class Ground_station:
     loss_factor = 0.7
 
 
-class ACDS:
+class ADCS:
     mmoi = 100  # kgm^2
     dist_torque = 1e-2  # Nm
     moment_arm = 1  # m
