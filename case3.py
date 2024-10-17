@@ -35,6 +35,7 @@ class Orbit:
     elongation_angle = m.radians(elongation_angle)  # rad
     pointing_offst = 0.1  # deg
     pointing_offst = m.radians(pointing_offst)  # rad
+    orbit_radius = 227900000 # km
 
     parent = "Mars"
     radius = 3396200 + altitude  # m

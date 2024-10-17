@@ -37,6 +37,7 @@ class Orbit:
     pointing_offst = m.radians(pointing_offst)  # rad
 
     parent = "Mercury"
+    orbit_radius = 58000000
     radius = 2440500 + altitude  # m
     grav_param = 0.022032e15  # m^3/s^2
     period = 2*m.pi*m.sqrt(radius**3/grav_param)  # s

@@ -5,7 +5,7 @@ class Spacecraft:
     transmit_P = 200  # W
     transmit_loss_f = 0.8  # -
     freq_downlink = 2.2  # GHz
-    freq_downlink = freq_downlink/1e9  # to Hz
+    #freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 221/240  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
     antenna_d = 0.2  # m
@@ -30,11 +30,10 @@ class Requirement:
 
 class Orbit:
     altitude = 500  # km
-    altitude = altitude * 1000  # m
-    elongation_angle = "N/A"  # deg
+    #altitude = altitude * 1000  # m
+    elongation_angle = 0  # deg
     elongation_angle = m.radians(elongation_angle)  # rad
     pointing_offst = 0.1  # deg
-    pointing_offst = m.radians(pointing_offst)  # rad
 
     parent = "Earth"
     radius = 6371000 + altitude  # m

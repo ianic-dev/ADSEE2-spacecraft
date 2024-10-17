@@ -5,7 +5,7 @@ class Spacecraft:
     transmit_P = 500  # W
     transmit_loss_f = 0.8  # -
     freq_downlink = 2.2  # GHz
-    freq_downlink = freq_downlink/1e9  # to Hz
+    #freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 221/240  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
     antenna_d = 4.2  # m
