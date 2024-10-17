@@ -8,7 +8,7 @@ class Spacecraft:
     freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 221/240  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
-    antenna_d = 1  # m
+    antenna_d = 0.2  # m
 
 
 class Payload:
