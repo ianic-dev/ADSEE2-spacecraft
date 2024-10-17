@@ -1,7 +1,7 @@
 import math
-from case1 import Spacecraft, Payload, Requirement, Orbit, Ground_station
+from case2 import Spacecraft, Payload, Requirement, Orbit, Ground_station
 
-case_number = 1  # Input case number here (and change the import statement in line 2).
+case_number = 2  # Input case number here (and change the import statement in line 2).
 
 P_T = 10 * math.log10(Spacecraft.transmit_P)
 
@@ -20,8 +20,16 @@ def L_P(frequency):
     L_P = 12 * ((e_T / alpha_half) ** 2)  # Pointing loss factor [dB]
     return L_P
 
-def L_A():
-    L_A = 0  # Atmospheric loss [dB] (I think we can neglect this since our frequency is low)
+def L_A(frequency):
+    """Calculates L_A for a given (up-/downlink) frequency."""
+    alpha = math.radians(10)  # Minimum elevation [deg]
+
+    if frequency == Spacecraft.freq_downlink:
+        L_A = Spacecraft.L_A0_down / math.sin(alpha)  # Atmospheric loss [dB]
+
+    elif frequency == Spacecraft.freq_uplink:
+        L_A = Spacecraft.L_A0_up / math.sin(alpha)  # Atmospheric loss [dB]
+
     return L_A
 
 def L_FS(frequency):
@@ -39,10 +47,12 @@ def L_S(frequency):
     c = 3e8  # m/s
     Lambda = c / (frequency * 1e9) # Wave length [m]
     theta_ES = math.radians(Orbit.elongation_angle)  # Elongation angle [rad]
-    d_E = 149597870700  # Earth-Sun distance [km]
-    d_S = Orbit.orbit_radius # Satellite-Sun distance [km]
-    S = math.sqrt(d_E**2 + d_S**2 - (2 * d_E * d_S * math.cos(theta_ES)))
-    L_S = (Lambda / (4 * math.pi * S))**2 # dB
+    d_E = 149597870700 * 1e3  # Earth-Sun distance [m]
+    d_S = Orbit.orbit_radius * 1e3  # Satellite-Sun distance [m]
+    S = math.sqrt(d_E**2 + d_S**2 - (2 * d_E * d_S * math.cos(theta_ES)))  # [m]
+
+    L_S = (Lambda / (4 * math.pi * S))**2 # Space loss [dB]
+
     return L_S
 
 L_R = 10 * math.log10(Ground_station.loss_factor)  # Receiver loss factor [dB]

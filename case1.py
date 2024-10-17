@@ -9,7 +9,8 @@ class Spacecraft:
     turnaround_r = 221/240  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
     antenna_d = 0.2  # m
-
+    L_A0_up = 0.036
+    L_A0_down = 0.035
 
 class Payload:
     width_angle = 20  # deg
