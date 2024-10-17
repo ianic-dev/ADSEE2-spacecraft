@@ -41,3 +41,15 @@ class Orbit:
 class Ground_station:
     transmit_P = 0  # W
     antenna_d = 0  # m
+
+
+class ACDS:
+    mmoi = 0  # kgm^2
+    dist_torque = 0  # Nm
+    moment_arm = 0  # m
+    manoevre_angle = 0  # deg
+    manoevre_time = 0  # s
+    manoevre_angle = m.radians(manoevre_angle)  # rad
+    pointing_knowledge = 0  # arcsec
+    pointing_knowledge = pointing_knowledge/3600  # deg
+    pointing_knowledge = m.radians(pointing_knowledge)  # rad
