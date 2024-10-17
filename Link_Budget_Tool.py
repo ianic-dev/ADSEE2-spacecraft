@@ -15,7 +15,7 @@ EIRP = 10 * math.log((Spacecraft.transmit_P / 1),10) - Spacecraft.transmit_loss_
 L_FS = 20 * math.log((4 * math.pi * 1)/Lambda) #dB
 
 #Space Loss
-L_S = 1
+L_S = 2
 #Atmospheric Loss
 L_A = 3
 
