@@ -48,6 +48,8 @@ class Ground_station:
     transmit_P = 400  # W
     antenna_d = 5  # m
     loss_factor = 0.7
+    T_s_down = 135  # K
+    T_s_up = 614  # K
 
 
 class ADCS:
