@@ -79,8 +79,8 @@ def T_s(frequency):
 def R(frequency):
     """Calculates R for a given (up-/downlink) frequency."""
     if frequency == Spacecraft.freq_downlink:
-        S_W = math.atan(Payload.width_angle / 2) * Orbit.altitude # Swath width [m]
-        P_S = S_W / (Payload.width_angle / Payload.px_size)  # Pixel size [m]
+        S_W = math.tan(Payload.width_angle / 2) * Orbit.altitude * 2 # Swath width [m]
+        P_S = math.tan(Payload.px_size) * Orbit.altitude  # Pixel size [m]
         V = math.sqrt(Orbit.grav_param) / Orbit.radius  # Orbital velocity [m/s]
         R_G = Payload.bit_depth * (S_W * V) / (P_S ** 2)  # Generated data rate [bits/s]
 
