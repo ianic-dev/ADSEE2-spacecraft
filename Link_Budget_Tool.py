@@ -3,22 +3,47 @@ from case1 import Spacecraft, Payload, Requirement, Orbit, Ground_station
 
 case_number = 1  # Input case number here (and change the import statement in line 2).
 
-P_T = 10 * math.log10(Spacecraft.transmit_P)  # Transmitter power [dBW]
+def P_T(frequency):
+    """Calculates P_T for a given (up-/downlink) frequency."""
+    if frequency == Spacecraft.freq_downlink:
+        P_T = 10 * math.log10(Spacecraft.transmit_P)  # Spacecraft transmitter power [dBW]
+
+    elif frequency == Spacecraft.freq_uplink:
+        P_T = 10 * math.log10(Ground_station.transmit_P)  # Ground station transmitter power [dBW]
+
+    return P_T
 
 def G_T(frequency):
     """Calculates G_T for a given (up-/downlink) frequency."""
-    G_T = 20 * math.log10(Spacecraft.antenna_d) + 20 * math.log10(frequency) + 17.8  # Transmitter antenna gain [dB]
+    if frequency == Spacecraft.freq_downlink:
+        G_T = 20 * math.log10(Spacecraft.antenna_d) + 20 * math.log10(frequency) + 17.8  # Spacecraft transmitter antenna gain [dB]
+
+    elif frequency == Spacecraft.freq_uplink:
+        G_T = 20 * math.log10(Ground_station.antenna_d) + 20 * math.log10(frequency) + 17.8  # Ground station transmitter antenna gain [dB]
 
     return G_T
 
-L_T = 10 * math.log10(Spacecraft.transmit_loss_f)  # Transmitter loss factor [dB]
+L_TS = 10 * math.log10(Spacecraft.transmit_loss_f)  # Spacecraft transmitter loss factor[dB]
+L_TG = 10 * math.log10(Ground_station.loss_factor)  # Ground station transmission loss factor [dB]
 
 def L_P(frequency):
     """Calculates L_P for a given (up-/downlink) frequency."""
-    e_T = Orbit.pointing_offst  # Pointing offset [deg]
-    alpha_half = 21 / (frequency * Spacecraft.antenna_d)  # [deg]
+    if frequency == Spacecraft.freq_downlink:
+        alpha_half_T = 21 / (frequency * Spacecraft.antenna_d)  # Transmitter half power angle [deg]
+        alpha_half_R = 21 / (frequency * Ground_station.antenna_d)  # Receiver half power angle [deg]
+        e_T = Orbit.pointing_offst  # Transmitter pointing offset [deg]
+        e_R = 0.1 * alpha_half_R  # Receiver pointing offset [deg]
 
-    L_P = 12 * ((e_T / alpha_half) ** 2)  # Pointing loss factor [dB]
+        L_P = - ((12 * ((e_T / alpha_half_T) ** 2)) + (12 * ((e_R / alpha_half_R) ** 2)))  # Downlink pointing loss factor [dB]
+
+    elif frequency == Spacecraft.freq_uplink:
+        alpha_half_T = 21 / (frequency * Ground_station.antenna_d)  # Transmitter half power angle [deg]
+        alpha_half_R = 21 / (frequency * Spacecraft.antenna_d)  # Receiver half power angle [deg]
+        e_T = 0.1 * alpha_half_T  # Transmitter pointing offset [deg]
+        e_R = Orbit.pointing_offst  # Receiver pointing offset [deg]
+
+        L_P = - ((12 * ((e_T / alpha_half_T) ** 2)) + (12 * ((e_R / alpha_half_R) ** 2)))  # Uplink pointing loss factor [dB]
+
     return L_P
 
 def L_A(frequency):
@@ -26,53 +51,55 @@ def L_A(frequency):
     alpha = math.radians(10)  # Minimum elevation [deg]
 
     if frequency == Spacecraft.freq_downlink:
-        L_A = Spacecraft.L_A0_down / math.sin(alpha)  # Atmospheric loss [dB]
+        L_A = - (Spacecraft.L_A0_down / math.sin(alpha))  # Downlink atmospheric loss [dB]
 
     elif frequency == Spacecraft.freq_uplink:
-        L_A = Spacecraft.L_A0_up / math.sin(alpha)  # Atmospheric loss [dB]
+        L_A = - (Spacecraft.L_A0_up / math.sin(alpha))  # Uplink atmospheric loss [dB]
 
     return L_A
 
 def L_FS(frequency):
     """Use only for LEO calculations. Calculates L_FS for a given (up-/downlink) frequency."""
-    c = 3e8  # Speed of sound [m/s]
-    Lambda = c / (frequency * 1e9)  # Wave length [m]
+    c = 3e8  # Speed of light [m/s]
     R_E = 6371  # Earth radius [km]
     alpha = math.radians(10)  # Minimum elevation [deg]
+
+    Lambda = c / (frequency * 1e9)  # Wave length [m]
     d = R_E * (math.sqrt(((Orbit.altitude + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [km]
 
-    L_FS = 20 * math.log10((4 * math.pi * d * 1e3) / Lambda)  # Free space loss [dB]
+    L_FS = - (20 * math.log10((4 * math.pi * d * 1e3) / Lambda))  # Free space loss [dB]
 
     return L_FS
 
 def L_S(frequency):
     """Only use for interplanetary or deep-space missions. Calculates L_S for a given (up-/downlink) frequency."""
-    c = 3e8  # Speed of sound [m/s]
-    Lambda = c / (frequency * 1e9) # Wave length [m]
-    theta_ES = math.radians(Orbit.elongation_angle)  # Elongation angle [rad]
-    d_E = 149597870700 * 1e3  # Earth-Sun distance [m]
+    c = 3e8  # Speed of light [m/s]
+    d_E = 1.496e+11 # Earth-Sun distance [m]
     d_S = Orbit.orbit_radius * 1e3  # Satellite-Sun distance [m]
-    S = math.sqrt(d_E**2 + d_S**2 - (2 * d_E * d_S * math.cos(theta_ES)))  # [m]
 
-    L_S = (Lambda / (4 * math.pi * S))**2 # Space loss [dB]
+    Lambda = c / (frequency * 1e9)  # Wave length [m]
+    S = math.sqrt(d_E**2 + d_S**2 - (2 * d_E * d_S * math.cos(Orbit.elongation_angle)))  # [m]
+    L_S = 10 * math.log10((Lambda / (4 * math.pi * S))**2) # Space loss [dB]
 
     return L_S
 
-L_R = 10 * math.log10(Ground_station.loss_factor)  # Receiver loss factor [dB]
-
 def G_R(frequency):
     """Calculates G_R for a given (up-/downlink) frequency."""
-    G_R = 20 * math.log10(Ground_station.antenna_d) + 20 * math.log10(frequency) + 17.8  # Receiver antenna gain [dB]
+    if frequency == Spacecraft.freq_downlink:
+        G_R = 20 * math.log10(Ground_station.antenna_d) + 20 * math.log10(frequency) + 17.8  # Downlink receiver antenna gain [dB]
+
+    elif frequency == Spacecraft.freq_uplink:
+        G_R = 20 * math.log10(Spacecraft.antenna_d) + 20 * math.log10(frequency) + 17.8  # Uplink receiver antenna gain [dB]
 
     return G_R
 
 def T_s(frequency):
     """Calculates T_s for a given (up-/downlink) frequency."""
     if frequency == Spacecraft.freq_downlink:
-        T_s = Ground_station.T_s_down  # Ground system noise temperature [K]
+        T_s = 10 * math.log10(Ground_station.T_s_down)  # Downlink ground system noise temperature [K]
 
     elif frequency == Spacecraft.freq_uplink:
-        T_s = Ground_station.T_s_up  # Ground system noise temperature [K]
+        T_s = 10 * math.log10(Ground_station.T_s_up)  # Uplink ground system noise temperature [K]
 
     return T_s
 
@@ -84,22 +111,22 @@ def R(frequency):
         V = math.sqrt(Orbit.grav_param) / Orbit.radius  # Orbital velocity [m/s]
         R_G = Payload.bit_depth * (S_W * V) / (P_S ** 2)  # Generated data rate [bits/s]
 
-        R = 10 * math.log10(R_G * (Payload.duty_cycle / Payload.downlink_fraction))  # Required data rate [dB]
+        R = 10 * math.log10(R_G * (Payload.duty_cycle / Payload.downlink_fraction))  # Downlink required data rate [dBbits/s]
 
     elif frequency == Spacecraft.freq_uplink:
-        R = 10 * math.log10(Requirement.uplink_data_rate)  # Required data rate [dB]
+        R = 10 * math.log10(Requirement.uplink_data_rate)  # Uplink required data rate [dBbits/s]
 
     return R
 
 def SNR(frequency):
     """Calculates SNR for a given (up-/downlink) frequency."""
-    k_B = -228.6 # Boltzmann constant [dB]
+    k_B = 10 * math.log10(1.380649e-23) # Boltzmann constant [dBJ/K]
 
     if case_number == 1 or case_number == 2:
-        SNR = P_T + G_T(frequency) - L_T - L_A(frequency) - L_FS(frequency) - L_R + (G_R(frequency) / T_s(frequency)) - R(frequency) - k_B  # Signal-to-noise ratio [dB]
+        SNR = P_T(frequency) + G_T(frequency) + L_TS + L_TG + L_P(frequency) + L_A(frequency) + L_FS(frequency) + G_R(frequency) - T_s(frequency) - R(frequency) - k_B  # Signal-to-noise ratio [dB]
 
     if case_number == 3 or case_number == 4:
-        SNR = P_T + G_T(frequency) - L_T - L_A(frequency) - L_S(frequency) - L_R + (G_R(frequency) / T_s(frequency)) - R(frequency) - k_B  # Signal-to-noise ratio [dB]
+        SNR = P_T(frequency) + G_T(frequency) + L_TS + L_TG + L_P(frequency) + L_A(frequency) + L_S(frequency) + G_R(frequency) - T_s(frequency) - R(frequency) - k_B  # Signal-to-noise ratio [dB]
 
     return SNR
 

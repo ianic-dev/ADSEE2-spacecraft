@@ -16,7 +16,7 @@ class Payload:
     width_angle = 20  # deg
     width_angle = m.radians(width_angle)  # rad
     px_size = 0.1  # arcmin
-    px_size = px_size*60  # deg
+    px_size = px_size/60  # deg
     px_size = m.radians(px_size)  # rad
     bit_depth = 8  # bit/px
     duty_cycle = 0.6  # -
