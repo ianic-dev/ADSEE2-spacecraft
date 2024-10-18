@@ -5,7 +5,7 @@ class Spacecraft:
     transmit_P = 1000  # W
     transmit_loss_f = 0.8  # -
     freq_downlink = 8.4  # GHz
-    freq_downlink = freq_downlink/1e9  # to Hz
+    #freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 749/880  # -
     freq_uplink = freq_downlink/turnaround_r  # Hz
     antenna_d = 1  # m
@@ -16,7 +16,7 @@ class Payload:
     width_angle = 10  # deg
     width_angle = m.radians(width_angle)  # rad
     px_size = 0.05  # arcmin
-    px_size = px_size*60  # deg
+    px_size = px_size/60  # deg
     px_size = m.radians(px_size)  # rad
     bit_depth = 8  # bit/px
     duty_cycle = 0.4  # -

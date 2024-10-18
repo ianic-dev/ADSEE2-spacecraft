@@ -1,7 +1,7 @@
 import math
-from case2 import Spacecraft, Payload, Requirement, Orbit, Ground_station
+from case1 import Spacecraft, Payload, Requirement, Orbit, Ground_station
 
-case_number = 2  # Input case number here (and change the import statement in line 2).
+case_number = 1  # Input case number here (and change the import statement in line 2).
 
 P_T = 10 * math.log10(Spacecraft.transmit_P)  # Transmitter power [dBW]
 
@@ -111,8 +111,36 @@ def SNR_margin(frequency):
 
     return SNR_margin
 
-print(f"The downlink signal-to-noise ratio = {SNR(Spacecraft.freq_downlink)} dB\n"
-      f"The uplink signal-to-noise ratio = {SNR(Spacecraft.freq_uplink)} dB\n"
-      f"The required up-/downlink signal-to-noise ratio = 10.5 dB\n"
-      f"The downlink signal-to-noise ratio margin = {SNR_margin(Spacecraft.freq_downlink)} dB\n"
-      f"The uplink signal-to-noise ratio margin = {SNR_margin(Spacecraft.freq_uplink)} dB")
+if case_number == 1 or case_number == 2:
+    print(f"Name | Downlink | Uplink\n"
+          f"P_T | {P_T(Spacecraft.freq_downlink)} | {P_T(Spacecraft.freq_uplink)}\n"
+          f"G_T | {G_T(Spacecraft.freq_downlink)} | {G_T(Spacecraft.freq_uplink)}\n"
+          f"L_TS | {L_TS} | {L_TS}\n"
+          f"L_TG | {L_TG} | {L_TG}\n"
+          f"L_P | {L_P(Spacecraft.freq_downlink)} | {L_P(Spacecraft.freq_uplink)}\n"
+          f"L_A | {L_A(Spacecraft.freq_downlink)} | {L_A(Spacecraft.freq_uplink)}\n"
+          f"L_FS | {L_FS(Spacecraft.freq_downlink)} | {L_FS(Spacecraft.freq_uplink)}\n"
+          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
+          f"T_s | {T_s(Spacecraft.freq_downlink)} | {T_s(Spacecraft.freq_uplink)}\n"
+          f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
+          f"k_B | -228.6 | -228.6\n"
+          f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
+          f"SNR_required | {10.5} | {10.5}\n"
+          f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
+
+elif case_number == 3 or case_number == 4:
+    print(f"Name | Downlink | Uplink\n"
+          f"P_T | {P_T(Spacecraft.freq_downlink)} | {P_T(Spacecraft.freq_uplink)}\n"
+          f"G_T | {G_T(Spacecraft.freq_downlink)} | {G_T(Spacecraft.freq_uplink)}\n"
+          f"L_TS | {L_TS} | {L_TS}\n"
+          f"L_TG | {L_TG} | {L_TG}\n"
+          f"L_P | {L_P(Spacecraft.freq_downlink)} | {L_P(Spacecraft.freq_uplink)}\n"
+          f"L_A | {L_A(Spacecraft.freq_downlink)} | {L_A(Spacecraft.freq_uplink)}\n"
+          f"L_S | {L_S(Spacecraft.freq_downlink)} | {L_S(Spacecraft.freq_uplink)}\n"
+          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
+          f"T_s | {T_s(Spacecraft.freq_downlink)} | {T_s(Spacecraft.freq_uplink)}\n"
+          f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
+          f"k_B | -228.6 | -228.6\n"
+          f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
+          f"SNR_required | {10.5} | {10.5}\n"
+          f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
