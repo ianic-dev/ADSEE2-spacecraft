@@ -2,12 +2,12 @@ import math as m
 
 
 class Spacecraft:
-    transmit_P = 200  # W
-    transmit_loss_f = 0.8  # -
-    freq_downlink = 2.2  # GHz
+    transmit_P = 50 # W
+    transmit_loss_f = 0.8  # -              '''May be changed'''
+    freq_downlink = 2.5  # GHz              '''May be changed'''
     #freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 221/240  # -
-    freq_uplink = freq_downlink/turnaround_r  # Hz
+    freq_uplink = freq_downlink * turnaround_r  # GHz          '''May be changed'''
     antenna_d = 0.2  # m
     L_A0_up = 0.035
     L_A0_down = 0.036
@@ -30,8 +30,8 @@ class Requirement:
 
 
 class Orbit:
-    altitude = 500  # km
-    #altitude = altitude * 1000  # m
+    altitude = 500 # km                        '''May be changed'''
+    altitude = altitude * 1000  # m
     elongation_angle = 0  # deg
     elongation_angle = m.radians(elongation_angle)  # rad
     pointing_offst = 0.1  # deg
@@ -43,9 +43,9 @@ class Orbit:
 
 
 class Ground_station:
-    transmit_P = 400  # W
+    transmit_P = 520  # W       '''May be changed'''
     antenna_d = 0.5  # m
-    loss_factor = 0.7
+    loss_factor = 0.7  #           '''May be changed'''
     T_s_down = 135  # K
     T_s_up = 614  # K
 

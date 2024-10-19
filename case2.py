@@ -2,12 +2,12 @@ import math as m
 
 
 class Spacecraft:
-    transmit_P = 500  # W
-    transmit_loss_f = 0.8  # -
-    freq_downlink = 2.2  # GHz
+    transmit_P = 200  # W
+    transmit_loss_f = 0.8  # -                  '''May be changed'''
+    freq_downlink = 2.2  # GHz                  '''May be changed'''
     #freq_downlink = freq_downlink/1e9  # to Hz
     turnaround_r = 221/240  # -
-    freq_uplink = freq_downlink/turnaround_r  # Hz
+    freq_uplink = freq_downlink * turnaround_r  # GHz
     antenna_d = 4.2  # m
     L_A0_up = 0.035
     L_A0_down = 0.036
@@ -20,7 +20,7 @@ class Payload:
     px_size = px_size/60  # deg
     px_size = m.radians(px_size)  # rad
     bit_depth = 8  # bit/px
-    duty_cycle = 0.8  # -
+    duty_cycle = 0.8  # -                   '''May be changed'''
     downlink_time_p_day = 4  # hr
     downlink_fraction = downlink_time_p_day/24  # -
 
@@ -32,10 +32,10 @@ class Requirement:
 
 class Orbit:
     altitude = 100  # km
-    altitude = altitude * 1000  # m
+    altitude = altitude * 1000 # m
     elongation_angle = "N/A"  # deg
     # elongation_angle = m.radians(elongation_angle)  # rad
-    pointing_offst = 0.1  # deg
+    pointing_offst = 0.1  # deg                                 '''May be changed'''
     pointing_offst = m.radians(pointing_offst)  # rad
 
     parent = "Moon"
@@ -45,9 +45,9 @@ class Orbit:
 
 
 class Ground_station:
-    transmit_P = 400  # W
-    antenna_d = 5  # m
-    loss_factor = 0.7
+    transmit_P = 400  # W       '''May be changed'''
+    antenna_d = 5  # m          '''May be changed'''
+    loss_factor = 0.7           #'''May be changed'''
     T_s_down = 135  # K
     T_s_up = 614  # K
 

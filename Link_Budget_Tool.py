@@ -66,10 +66,10 @@ def L_FS(frequency):
 
     Lambda = c / (frequency * 1e9)  # Wave length [m]
 
-    Lambda = c / (frequency * 1e9)  # Wave length [m]
-    d = R_E * (math.sqrt(((Orbit.altitude + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [km]
+    if case_number == 1:
+        d = R_E * (math.sqrt(((Orbit.altitude + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [m]
 
-    L_FS = - (20 * math.log10((4 * math.pi * d * 1e3) / Lambda))  # Free space loss [dB]
+        L_FS = - (20 * math.log10((4 * math.pi * d) / Lambda))  # Free space loss [dB]
 
     elif case_number == 2:
         d = R_E * (math.sqrt(((Orbit.altitude + 384400000 + 1737400 + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [m]
@@ -146,15 +146,15 @@ if case_number == 1 or case_number == 2:
     print(f"Name | Downlink | Uplink\n"
           f"P_T | {P_T(Spacecraft.freq_downlink)} | {P_T(Spacecraft.freq_uplink)}\n"
           f"G_T | {G_T(Spacecraft.freq_downlink)} | {G_T(Spacecraft.freq_uplink)}\n"
+          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
           f"L_TS | {L_TS} | {L_TS}\n"
           f"L_TG | {L_TG} | {L_TG}\n"
           f"L_P | {L_P(Spacecraft.freq_downlink)} | {L_P(Spacecraft.freq_uplink)}\n"
           f"L_A | {L_A(Spacecraft.freq_downlink)} | {L_A(Spacecraft.freq_uplink)}\n"
           f"L_FS | {L_FS(Spacecraft.freq_downlink)} | {L_FS(Spacecraft.freq_uplink)}\n"
-          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
-          f"T_s | {T_s(Spacecraft.freq_downlink)} | {T_s(Spacecraft.freq_uplink)}\n"
-          f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
-          f"k_B | -228.6 | -228.6\n"
+          f"T_s | {-T_s(Spacecraft.freq_downlink)} | {-T_s(Spacecraft.freq_uplink)}\n"
+          f"R | {-R(Spacecraft.freq_downlink)} | {-R(Spacecraft.freq_uplink)}\n"
+          f"k_B | {-k_B} | {-k_B}\n"
           f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
           f"SNR_required | {SNR_required} | {SNR_required}\n"
           f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
@@ -163,15 +163,15 @@ elif case_number == 3 or case_number == 4:
     print(f"Name | Downlink | Uplink\n"
           f"P_T | {P_T(Spacecraft.freq_downlink)} | {P_T(Spacecraft.freq_uplink)}\n"
           f"G_T | {G_T(Spacecraft.freq_downlink)} | {G_T(Spacecraft.freq_uplink)}\n"
+          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
           f"L_TS | {L_TS} | {L_TS}\n"
           f"L_TG | {L_TG} | {L_TG}\n"
           f"L_P | {L_P(Spacecraft.freq_downlink)} | {L_P(Spacecraft.freq_uplink)}\n"
           f"L_A | {L_A(Spacecraft.freq_downlink)} | {L_A(Spacecraft.freq_uplink)}\n"
           f"L_S | {L_S(Spacecraft.freq_downlink)} | {L_S(Spacecraft.freq_uplink)}\n"
-          f"G_R | {G_R(Spacecraft.freq_downlink)} | {G_R(Spacecraft.freq_uplink)}\n"
-          f"T_s | {T_s(Spacecraft.freq_downlink)} | {T_s(Spacecraft.freq_uplink)}\n"
-          f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
-          f"k_B | -228.6 | -228.6\n"
+          f"T_s | {-T_s(Spacecraft.freq_downlink)} | {-T_s(Spacecraft.freq_uplink)}\n"
+          f"R | {-R(Spacecraft.freq_downlink)} | {-R(Spacecraft.freq_uplink)}\n"
+          f"k_B | {-k_B} | {-k_B}\n"
           f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
           f"SNR_required | {SNR_required} | {SNR_required}\n"
           f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
