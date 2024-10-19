@@ -1,7 +1,7 @@
 import math
-from case1 import Spacecraft, Payload, Requirement, Orbit, Ground_station
+from case4 import Spacecraft, Payload, Requirement, Orbit, Ground_station
 
-case_number = 1  # Input case number here (and change the import statement in line 2).
+case_number = 4  # Input case number here (and change the import statement in line 2).
 
 def P_T(frequency):
     """Calculates P_T for a given (up-/downlink) frequency."""
@@ -61,14 +61,20 @@ def L_A(frequency):
 def L_FS(frequency):
     """Use only for LEO calculations. Calculates L_FS for a given (up-/downlink) frequency."""
     c = 3e8  # Speed of light [m/s]
-    R_E = 6371  # Earth radius [km]
     alpha = math.radians(10)  # Minimum elevation [deg]
+    R_E = 6371000  # Earth radius [m]R_E = 6371000  # Earth radius [m]
+
+    Lambda = c / (frequency * 1e9)  # Wave length [m]
 
     Lambda = c / (frequency * 1e9)  # Wave length [m]
     d = R_E * (math.sqrt(((Orbit.altitude + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [km]
 
     L_FS = - (20 * math.log10((4 * math.pi * d * 1e3) / Lambda))  # Free space loss [dB]
 
+    elif case_number == 2:
+        d = R_E * (math.sqrt(((Orbit.altitude + 384400000 + 1737400 + R_E) / R_E) ** 2 - (math.cos(alpha)) ** 2) - math.sin(alpha))  # Distance [m]
+
+        L_FS = - (20 * math.log10((4 * math.pi * d) / Lambda))  # Free space loss [dB]
     return L_FS
 
 def L_S(frequency):
@@ -111,17 +117,16 @@ def R(frequency):
         V = math.sqrt(Orbit.grav_param) / Orbit.radius  # Orbital velocity [m/s]
         R_G = Payload.bit_depth * (S_W * V) / (P_S ** 2)  # Generated data rate [bits/s]
 
-        R = 10 * math.log10(R_G * (Payload.duty_cycle / Payload.downlink_fraction))  # Downlink required data rate [dBbits/s]
+        R = 10 * math.log10(2 * R_G * (Payload.duty_cycle / Payload.downlink_fraction))  # Downlink required data rate [dBbits/s]
 
     elif frequency == Spacecraft.freq_uplink:
-        R = 10 * math.log10(Requirement.uplink_data_rate)  # Uplink required data rate [dBbits/s]
+        R = 10 * math.log10(2 * Requirement.uplink_data_rate)  # Uplink required data rate [dBbits/s]
 
     return R
 
+k_B = 10 * math.log10(1.380649e-23) # Boltzmann constant [dBJ/K]
 def SNR(frequency):
     """Calculates SNR for a given (up-/downlink) frequency."""
-    k_B = 10 * math.log10(1.380649e-23) # Boltzmann constant [dBJ/K]
-
     if case_number == 1 or case_number == 2:
         SNR = P_T(frequency) + G_T(frequency) + L_TS + L_TG + L_P(frequency) + L_A(frequency) + L_FS(frequency) + G_R(frequency) - T_s(frequency) - R(frequency) - k_B  # Signal-to-noise ratio [dB]
 
@@ -130,10 +135,9 @@ def SNR(frequency):
 
     return SNR
 
+SNR_required = 4.8  # Required signal-to-noise ratio [dB]
 def SNR_margin(frequency):
     """Calculates the margin."""
-    SNR_required = 10.5  # Required signal-to-noise ratio [dB]
-
     SNR_margin = SNR(frequency) - SNR_required  # Signal-to-noise ratio margin [dB] (must be larger than 3 dB)
 
     return SNR_margin
@@ -152,7 +156,7 @@ if case_number == 1 or case_number == 2:
           f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
           f"k_B | -228.6 | -228.6\n"
           f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
-          f"SNR_required | {10.5} | {10.5}\n"
+          f"SNR_required | {SNR_required} | {SNR_required}\n"
           f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
 
 elif case_number == 3 or case_number == 4:
@@ -169,5 +173,5 @@ elif case_number == 3 or case_number == 4:
           f"R | {R(Spacecraft.freq_downlink)} | {R(Spacecraft.freq_uplink)}\n"
           f"k_B | -228.6 | -228.6\n"
           f"SNR | {SNR(Spacecraft.freq_downlink)} | {SNR(Spacecraft.freq_uplink)}\n"
-          f"SNR_required | {10.5} | {10.5}\n"
+          f"SNR_required | {SNR_required} | {SNR_required}\n"
           f"SNR_margin | {SNR_margin(Spacecraft.freq_downlink)} | {SNR_margin(Spacecraft.freq_uplink)}")
